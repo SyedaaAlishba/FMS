@@ -1,0 +1,72 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args)
+    {
+
+
+        int[][] array  =  { {3,1,8},{7,0},{3,7,5},{0,2},{8},{2,6},{5},{2,1},{4,0}};
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("eneter the  starting position");
+        int sp = scanner.nextInt();
+        System.out.println("enter the  ending position");
+        int ep = scanner.nextInt();
+
+        //for direct
+        for(int j = 0 ; j <array[sp].length ; j++){
+            if(array[sp][j] == ep){
+                System.out.println("you go direct");
+                break;
+            }
+        }
+
+        //for 1 via
+        for(int z = 0 ; z <array[sp].length ; z++) {
+            int via1 = array[sp][z];
+            for (int i = 0; i < array[via1].length; i++) {
+                if (array[via1][i] == ep) {
+                    System.out.println("YOU GO T0 " + via1 + " THEN " + ep);
+                    break;
+                }
+            }
+        }
+
+        //for 2 via
+        for(int k = 0 ; k <array[sp].length ; k++) {
+            int via2 = array[sp][k];
+            for (int l = 0; l < array[via2].length; l++) {
+                int via3 = array[via2][l];
+                for(int m = 0 ; m < array[via3].length ; m++){
+                    if (array[via3][m] == ep) {
+                        System.out.println("YOU GO T0 " + via2 + " THEN " + via3 + "THEN" +  ep);
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        //for 3 via
+        for(int q = 0 ; q <array[sp].length ; q++) {
+            int via4 = array[sp][q];
+            for (int l = 0; l < array[via4].length; l++) {
+                int via5 = array[via4][l];
+                for (int m = 0; m < array[via5].length; m++) {
+                    int via6 = array[via5][m];
+                    for (int s = 0; s < array[via6].length; s++) {
+                        if (array[via6][s] == ep) {
+                            System.out.println("YOU GO T0 " + via4 + " THEN " + via5 + " THEN " + via6 + " THEN " + ep);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+*/
+
+
+
+
+
+
+
