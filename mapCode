@@ -12,16 +12,29 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
 
-        String[][] arr = {
-                {"Pakistan", "Afghanistan", "China", "India", "Iran"},      // 0: Pakistan
-                {"Afghanistan", "Pakistan", "Iran"},                        // 1: Afghanistan
-                {"China", "Pakistan", "India","North Korea"},                             // 2: China
-                {"India", "China", "Nepal", "Iran"},                        // 3: India
-                {"Iran", "Pakistan", "Afghanistan", "India", "Turkey", "Nepal", "Australia"}, // 4: Iran
-                {"Nepal", "India", "Iran"},                                 // 5: Nepal
-                {"Turkey", "Iran", "Australia"},                            // 6: Turkey
-                {"Australia", "Iran", "Turkey"}                             // 7: Australia
-        };
+      String[][] arr = {
+    {"Pakistan", "Afghanistan", "China", "India", "Iran", "UAE"},                  // 0
+    {"Afghanistan", "Pakistan", "Iran", "China", "Uzbekistan", "Turkmenistan"},    // 1
+    {"China", "Pakistan", "India", "Afghanistan", "Nepal", "North Korea", "South Korea"}, // 2
+    {"India", "China", "Nepal", "Pakistan"},                                        // 3
+    {"Iran", "Pakistan", "Afghanistan", "Iraq", "Turkey", "Turkmenistan"},         // 4
+    {"Nepal", "India", "China"},                                                   // 5
+    {"Turkey", "Iran", "Iraq"},                                                    // 6
+    {"UAE", "Saudi Arabia", "Oman", "Pakistan"},                                    // 7
+    {"Saudi Arabia", "Yemen", "Oman", "UAE", "Iraq","Pakistan"},                               // 8
+    {"Oman", "Yemen", "UAE", "Saudi Arabia"},                                       // 9
+    {"Yemen", "Saudi Arabia", "Oman"},                                              // 10
+    {"Iraq", "Iran", "Turkey", "Saudi Arabia"},                                     // 11
+    {"Turkmenistan", "Iran", "Uzbekistan", "Afghanistan"},                          // 12
+    {"Uzbekistan", "Turkmenistan", "Afghanistan"},                                  // 13
+    {"North Korea", "China", "South Korea"},                                        // 14
+    {"South Korea", "North Korea", "China"}, 
+    {"Bangladesh", "India", "Nepal", "China"},
+    {"Kazakhstan", "Uzbekistan", "China", "Russia"},
+    {"Qatar", "UAE", "Saudi Arabia", "Oman"},
+    {"Azerbaijan", "Iran", "Turkey", "Russia"},
+    {"Russia","Azerbaijan","Kazakhstan","China"}// 15
+};
         boolean found = false;
         System.out.println("Enter your Current Location");
         String cL = sc.nextLine();
@@ -40,7 +53,7 @@ public class Main {
             // 1st level: direct
             for (int i = 0; i < arr[sp].length && !found; i++) {
                 if (arr[sp][i].equalsIgnoreCase(dL)) {
-                    System.out.println("You Can Go Direct To This Location");
+                    System.out.println( "Direct Flight To  "+dL);
                     found = true;
                 }
             }
@@ -54,7 +67,7 @@ public class Main {
                     if (via1Index == -1) continue;
                     for (int k = 0; k < arr[via1Index].length; k++) {
                         if (arr[via1Index][k].equalsIgnoreCase(dL)) {
-                            System.out.println("First go to " + via1 + ", then you will reach " + dL);
+                            System.out.println("Connected Flight:\nFirst go to " + via1 + ", then you will reach " + dL);
                             found = true;
                             break;
                         }
@@ -78,7 +91,7 @@ public class Main {
 
                         for (int k = 0; k < arr[via2Index].length && !found; k++) {
                             if (arr[via2Index][k].equalsIgnoreCase(dL)) {
-                                System.out.println("First go to " + via1 + ", then to " + via2 + ", then to " + dL);
+                               System.out.println("Connected Flight:\nFirst Flight to " + via2 + ", then to destination " + dL);
                                 found = true;
                             }
                         }
@@ -108,14 +121,51 @@ public class Main {
 
                             for (int k = 0; k < arr[via3Index].length && !found; k++) {
                                 if (arr[via3Index][k].equalsIgnoreCase(dL)) {
-                                    System.out.println("First go to " + via1 + ", then to " + via2 + ", then to " + via3 + " and you reached at " + dL);
+                                  System.out.println("Connected Flight:\nFirst Flight to " + via2 + ", then to destination " + dL);
                                     found = true;
                                 }
                             }
                         }
                     }
                 }
+            }// 5th level: via1 → via2 → via3 → via4
+if (!found) {
+    for (int j = 0; j < arr[sp].length && !found; j++) {
+        String via1 = arr[sp][j];
+        if (via1.equalsIgnoreCase(cL)) continue;
+        int via1Index = findLocationIndex(arr, via1);
+        if (via1Index == -1) continue;
+
+        for (int i = 0; i < arr[via1Index].length && !found; i++) {
+            String via2 = arr[via1Index][i];
+            if (via2.equalsIgnoreCase(cL) || via2.equalsIgnoreCase(via1)) continue;
+            int via2Index = findLocationIndex(arr, via2);
+            if (via2Index == -1) continue;
+
+            for (int z = 0; z < arr[via2Index].length && !found; z++) {
+                String via3 = arr[via2Index][z];
+                if (via3.equalsIgnoreCase(cL) || via3.equalsIgnoreCase(via1) || via3.equalsIgnoreCase(via2)) continue;
+                int via3Index = findLocationIndex(arr, via3);
+                if (via3Index == -1) continue;
+
+                for (int y = 0; y < arr[via3Index].length && !found; y++) {
+                    String via4 = arr[via3Index][y];
+                    if (via4.equalsIgnoreCase(cL) || via4.equalsIgnoreCase(via1) || via4.equalsIgnoreCase(via2) || via4.equalsIgnoreCase(via3)) continue;
+                    int via4Index = findLocationIndex(arr, via4);
+                    if (via4Index == -1) continue;
+
+                    for (int k = 0; k < arr[via4Index].length && !found; k++) {
+                        if (arr[via4Index][k].equalsIgnoreCase(dL)) {
+                            System.out.println("Connected Flight:\nFirst Flight to " + via2 + ", then to destination " + dL);
+                            found = true;
+                        }
+                    }
+                }
             }
+        }
+    }
+}
+
 
             if (!found) {
                 System.out.println("No possible route found.");
@@ -126,24 +176,3 @@ public class Main {
         }
     }
 }
-
-
-
-//String[][] arr = {
-//    {"Pakistan", "Afghanistan", "China", "India", "Iran", "UAE"},                  // 0
-//    {"Afghanistan", "Pakistan", "Iran", "China", "Uzbekistan", "Turkmenistan"},    // 1
- //   {"China", "Pakistan", "India", "Afghanistan", "Nepal", "North Korea", "South Korea"}, // 2
- //   {"India", "China", "Nepal", "Pakistan"},                                        // 3
- //   {"Iran", "Pakistan", "Afghanistan", "Iraq", "Turkey", "Turkmenistan"},         // 4
-  //  {"Nepal", "India", "China"},                                                   // 5
-  //  {"Turkey", "Iran", "Iraq"},                                                    // 6
-  //  {"UAE", "Saudi Arabia", "Oman", "Pakistan"},                                    // 7
-  //  {"Saudi Arabia", "Yemen", "Oman", "UAE", "Iraq"},                               // 8
-  //  {"Oman", "Yemen", "UAE", "Saudi Arabia"},                                       // 9
-  //  {"Yemen", "Saudi Arabia", "Oman"},                                              // 10
-  //  {"Iraq", "Iran", "Turkey", "Saudi Arabia"},                                     // 11
-   // {"Turkmenistan", "Iran", "Uzbekistan", "Afghanistan"},                          // 12
-   // {"Uzbekistan", "Turkmenistan", "Afghanistan"},                                  // 13
-  //  {"North Korea", "China", "South Korea"},                                        // 14
- //   {"South Korea", "North Korea", "China"},                                        // 15
-//};
