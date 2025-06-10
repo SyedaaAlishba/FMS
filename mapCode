@@ -126,3 +126,24 @@ public class Main {
         }
     }
 }
+
+
+
+//String[][] arr = {
+//    {"Pakistan", "Afghanistan", "China", "India", "Iran", "UAE"},                  // 0
+//    {"Afghanistan", "Pakistan", "Iran", "China", "Uzbekistan", "Turkmenistan"},    // 1
+ //   {"China", "Pakistan", "India", "Afghanistan", "Nepal", "North Korea", "South Korea"}, // 2
+ //   {"India", "China", "Nepal", "Pakistan"},                                        // 3
+ //   {"Iran", "Pakistan", "Afghanistan", "Iraq", "Turkey", "Turkmenistan"},         // 4
+  //  {"Nepal", "India", "China"},                                                   // 5
+  //  {"Turkey", "Iran", "Iraq"},                                                    // 6
+  //  {"UAE", "Saudi Arabia", "Oman", "Pakistan"},                                    // 7
+  //  {"Saudi Arabia", "Yemen", "Oman", "UAE", "Iraq"},                               // 8
+  //  {"Oman", "Yemen", "UAE", "Saudi Arabia"},                                       // 9
+  //  {"Yemen", "Saudi Arabia", "Oman"},                                              // 10
+  //  {"Iraq", "Iran", "Turkey", "Saudi Arabia"},                                     // 11
+   // {"Turkmenistan", "Iran", "Uzbekistan", "Afghanistan"},                          // 12
+   // {"Uzbekistan", "Turkmenistan", "Afghanistan"},                                  // 13
+  //  {"North Korea", "China", "South Korea"},                                        // 14
+ //   {"South Korea", "North Korea", "China"},                                        // 15
+//};
