@@ -1,0 +1,128 @@
+import java.util.Scanner;
+public class Main {
+    public static int findLocationIndex(String[][] arr, String location) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i][0].equalsIgnoreCase(location)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+
+        String[][] arr = {
+                {"Pakistan", "Afghanistan", "China", "India", "Iran"},      // 0: Pakistan
+                {"Afghanistan", "Pakistan", "Iran"},                        // 1: Afghanistan
+                {"China", "Pakistan", "India","North Korea"},                             // 2: China
+                {"India", "China", "Nepal", "Iran"},                        // 3: India
+                {"Iran", "Pakistan", "Afghanistan", "India", "Turkey", "Nepal", "Australia"}, // 4: Iran
+                {"Nepal", "India", "Iran"},                                 // 5: Nepal
+                {"Turkey", "Iran", "Australia"},                            // 6: Turkey
+                {"Australia", "Iran", "Turkey"}                             // 7: Australia
+        };
+        boolean found = false;
+        System.out.println("Enter your Current Location");
+        String cL = sc.nextLine();
+
+        int sp = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i][0].equalsIgnoreCase(cL)) {
+                sp = i;
+                break;
+            }
+        }
+        if (sp != -1) {
+            System.out.println("Current location found at index: " + sp);
+            System.out.println("WHERE TO GO?");
+            String dL = sc.nextLine();
+            // 1st level: direct
+            for (int i = 0; i < arr[sp].length && !found; i++) {
+                if (arr[sp][i].equalsIgnoreCase(dL)) {
+                    System.out.println("You Can Go Direct To This Location");
+                    found = true;
+                }
+            }
+
+            // 2nd level: via1
+            if (!found) {
+                for (int j = 0; j < arr[sp].length && !found; j++) {
+                    String via1 = arr[sp][j];
+                    if (via1.equalsIgnoreCase(cL)) continue;
+                    int via1Index = findLocationIndex(arr, via1);
+                    if (via1Index == -1) continue;
+                    for (int k = 0; k < arr[via1Index].length; k++) {
+                        if (arr[via1Index][k].equalsIgnoreCase(dL)) {
+                            System.out.println("First go to " + via1 + ", then you will reach " + dL);
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // 3rd level: via1 → via2
+            if (!found) {
+                for (int j = 0; j < arr[sp].length && !found; j++) {
+                    String via1 = arr[sp][j];
+                    if (via1.equalsIgnoreCase(cL)) continue;
+                    int via1Index = findLocationIndex(arr, via1);
+                    if (via1Index == -1) continue;
+
+                    for (int i = 0; i < arr[via1Index].length && !found; i++) {
+                        String via2 = arr[via1Index][i];
+                        if (via2.equalsIgnoreCase(cL) || via2.equalsIgnoreCase(via1)) continue;
+                        int via2Index = findLocationIndex(arr, via2);
+                        if (via2Index == -1) continue;
+
+                        for (int k = 0; k < arr[via2Index].length && !found; k++) {
+                            if (arr[via2Index][k].equalsIgnoreCase(dL)) {
+                                System.out.println("First go to " + via1 + ", then to " + via2 + ", then to " + dL);
+                                found = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 4th level: via1 → via2 → via3
+            if (!found) {
+                for (int j = 0; j < arr[sp].length && !found; j++) {
+                    String via1 = arr[sp][j];
+                    if (via1.equalsIgnoreCase(cL)) continue;
+                    int via1Index = findLocationIndex(arr, via1);
+                    if (via1Index == -1) continue;
+
+                    for (int i = 0; i < arr[via1Index].length && !found; i++) {
+                        String via2 = arr[via1Index][i];
+                        if (via2.equalsIgnoreCase(cL) || via2.equalsIgnoreCase(via1)) continue;
+                        int via2Index = findLocationIndex(arr, via2);
+                        if (via2Index == -1) continue;
+
+                        for (int z = 0; z < arr[via2Index].length && !found; z++) {
+                            String via3 = arr[via2Index][z];
+                            if (via3.equalsIgnoreCase(cL) || via3.equalsIgnoreCase(via1) || via3.equalsIgnoreCase(via2)) continue;
+                            int via3Index = findLocationIndex(arr, via3);
+                            if (via3Index == -1) continue;
+
+                            for (int k = 0; k < arr[via3Index].length && !found; k++) {
+                                if (arr[via3Index][k].equalsIgnoreCase(dL)) {
+                                    System.out.println("First go to " + via1 + ", then to " + via2 + ", then to " + via3 + " and you reached at " + dL);
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!found) {
+                System.out.println("No possible route found.");
+            }
+
+        } else {
+            System.out.println("Current location not found.");
+        }
+    }
+}
