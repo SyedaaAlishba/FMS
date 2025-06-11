@@ -1,0 +1,404 @@
+import java.util.Scanner;
+public class Main {
+    public static int findLocationIndex(String[][] arr, String location) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i][0].equalsIgnoreCase(location)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean isAirlineInCountry(String[] airlineCountries, String country) {
+        for (int i = 0; i < airlineCountries.length; i++) {
+            if (airlineCountries[i].equalsIgnoreCase(country)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean findAndPrintRoute(String[][] arr, String cL, String dL, int sp) {
+        boolean found = false;
+
+        // 1st level: direct
+        for (int i = 0; i < arr[sp].length && !found; i++) {
+            if (arr[sp][i].equalsIgnoreCase(dL)) {
+                System.out.println("Direct Flight To  " + dL);
+                found = true;
+            }
+        }
+
+        // 2nd level: via1
+        if (!found) {
+            for (int j = 0; j < arr[sp].length && !found; j++) {
+                String via1 = arr[sp][j];
+                if (via1.equalsIgnoreCase(cL)) continue;
+                int via1Index = findLocationIndex(arr, via1);
+                if (via1Index == -1) continue;
+                for (int k = 0; k < arr[via1Index].length; k++) {
+                    if (arr[via1Index][k].equalsIgnoreCase(dL)) {
+                        System.out.println("Connected Flight:\nFirst go to " + via1 + ", then you will reach " + dL);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 3rd level: via1 → via2
+        if (!found) {
+            for (int j = 0; j < arr[sp].length && !found; j++) {
+                String via1 = arr[sp][j];
+                if (via1.equalsIgnoreCase(cL)) continue;
+                int via1Index = findLocationIndex(arr, via1);
+                if (via1Index == -1) continue;
+
+                for (int i = 0; i < arr[via1Index].length && !found; i++) {
+                    String via2 = arr[via1Index][i];
+                    if (via2.equalsIgnoreCase(cL) || via2.equalsIgnoreCase(via1)) continue;
+                    int via2Index = findLocationIndex(arr, via2);
+                    if (via2Index == -1) continue;
+
+                    for (int k = 0; k < arr[via2Index].length && !found; k++) {
+                        if (arr[via2Index][k].equalsIgnoreCase(dL)) {
+                            System.out.println("Connected Flight:\nFirst Flight to " + via2 + ", then to destination " + dL);
+                            found = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 4th level: via1 → via2 → via3
+        if (!found) {
+            for (int j = 0; j < arr[sp].length && !found; j++) {
+                String via1 = arr[sp][j];
+                if (via1.equalsIgnoreCase(cL)) continue;
+                int via1Index = findLocationIndex(arr, via1);
+                if (via1Index == -1) continue;
+
+                for (int i = 0; i < arr[via1Index].length && !found; i++) {
+                    String via2 = arr[via1Index][i];
+                    if (via2.equalsIgnoreCase(cL) || via2.equalsIgnoreCase(via1)) continue;
+                    int via2Index = findLocationIndex(arr, via2);
+                    if (via2Index == -1) continue;
+
+                    for (int z = 0; z < arr[via2Index].length && !found; z++) {
+                        String via3 = arr[via2Index][z];
+                        if (via3.equalsIgnoreCase(cL) || via3.equalsIgnoreCase(via1) || via3.equalsIgnoreCase(via2)) continue;
+                        int via3Index = findLocationIndex(arr, via3);
+                        if (via3Index == -1) continue;
+
+                        for (int k = 0; k < arr[via3Index].length && !found; k++) {
+                            if (arr[via3Index][k].equalsIgnoreCase(dL)) {
+                                System.out.println("Connected Flight:\nFirst Flight to " + via2 + ", then to destination " + dL);
+                                found = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 5th level: via1 → via2 → via3 → via4
+        if (!found) {
+            for (int j = 0; j < arr[sp].length && !found; j++) {
+                String via1 = arr[sp][j];
+                if (via1.equalsIgnoreCase(cL)) continue;
+                int via1Index = findLocationIndex(arr, via1);
+                if (via1Index == -1) continue;
+
+                for (int i = 0; i < arr[via1Index].length && !found; i++) {
+                    String via2 = arr[via1Index][i];
+                    if (via2.equalsIgnoreCase(cL) || via2.equalsIgnoreCase(via1)) continue;
+                    int via2Index = findLocationIndex(arr, via2);
+                    if (via2Index == -1) continue;
+
+                    for (int z = 0; z < arr[via2Index].length && !found; z++) {
+                        String via3 = arr[via2Index][z];
+                        if (via3.equalsIgnoreCase(cL) || via3.equalsIgnoreCase(via1) || via3.equalsIgnoreCase(via2)) continue;
+                        int via3Index = findLocationIndex(arr, via3);
+                        if (via3Index == -1) continue;
+
+                        for (int y = 0; y < arr[via3Index].length && !found; y++) {
+                            String via4 = arr[via3Index][y];
+                            if (via4.equalsIgnoreCase(cL) || via4.equalsIgnoreCase(via1) || via4.equalsIgnoreCase(via2) || via4.equalsIgnoreCase(via3)) continue;
+                            int via4Index = findLocationIndex(arr, via4);
+                            if (via4Index == -1) continue;
+
+                            for (int k = 0; k < arr[via4Index].length && !found; k++) {
+                                if (arr[via4Index][k].equalsIgnoreCase(dL)) {
+                                    System.out.println("Connected Flight:\nFirst Flight to " + via2 + ", then to destination " + dL);
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!found) {
+            System.out.println("No possible route found.");
+        }
+
+        return found;
+    }
+
+
+    public static void checkEmiratesFlight(String from, String to, String[][] emAr) {
+        boolean found = false;
+        for (int i = 0; i < emAr.length; i++) {
+            if (emAr[i][0].equalsIgnoreCase(from)) {
+                for (int j = 1; j < emAr[i].length; j++) {
+                    if (emAr[i][j].equalsIgnoreCase(to)) {
+                        System.out.println("Direct Emirates flight from " + from + " to " + to);
+                        found = true;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No Emirates flight found from " + from + " to " + to);
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int flightTimeIndex = -1;
+
+        String[][] arr = {
+                {"Pakistan", "Afghanistan", "China", "India", "Iran", "UAE"},                  // 0
+                {"Afghanistan", "Pakistan", "Iran", "China", "Uzbekistan", "Turkmenistan"},    // 1
+                {"China", "Pakistan", "India", "Afghanistan", "Nepal", "North Korea", "South Korea","Kazakhstan"}, // 2
+                {"India", "China", "Nepal", "Pakistan"},                                        // 3
+                {"Iran", "Pakistan", "Afghanistan", "Iraq", "Turkey", "Turkmenistan"},         // 4
+                {"Nepal", "India", "China"},                                                   // 5
+                {"Turkey", "Iran", "Iraq"},                                                    // 6
+                {"UAE", "Saudi Arabia", "Oman", "Pakistan"},                                    // 7
+                {"Saudi Arabia", "Yemen", "Oman", "UAE", "Iraq","Pakistan"},                               // 8
+                {"Oman", "Yemen", "UAE", "Saudi Arabia"},                                       // 9
+                {"Yemen", "Saudi Arabia", "Oman","Qatar"},                                              // 10
+                {"Iraq", "Iran", "Turkey", "Saudi Arabia"},                                     // 11
+                {"Turkmenistan", "Iran", "Uzbekistan", "Afghanistan"},                          // 12
+                {"Uzbekistan", "Turkmenistan", "Afghanistan"},                                  // 13
+                {"North Korea", "China", "South Korea"},                                        // 14
+                {"South Korea", "North Korea", "China"},
+                {"Bangladesh", "India", "Nepal", "China"},
+                {"Kazakhstan", "Uzbekistan", "China", "Russia"},
+                {"Qatar", "UAE", "Saudi Arabia", "Oman"},
+                {"Azerbaijan", "Iran", "Turkey", "Russia"},
+                {"Russia","Azerbaijan","Kazakhstan","China"}// 15
+        };
+
+        String[][] emAr = {
+                {"Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"China", "Pakistan", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"India", "Pakistan", "China", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia","North korea"},
+                {"Iran", "Pakistan", "China", "India", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"UAE", "Pakistan", "China", "India", "Iran", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"Nepal", "Pakistan", "China", "India", "Iran", "UAE", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"Turkey", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"Saudi Arabia", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"Oman", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Iraq", "South Korea", "Bangladesh", "Russia"},
+                {"Iraq", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "South Korea", "Bangladesh", "Russia"},
+                {"South Korea", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "Bangladesh", "Russia"},
+                {"Bangladesh", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Russia"},
+                {"Russia", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh"},
+                {"Qatar", "Pakistan", "China", "India", "Iran", "UAE", "Nepal", "Turkey", "Saudi Arabia", "Oman", "Iraq", "South Korea", "Bangladesh", "Russia"},
+        };
+
+
+
+        String[] piaCountries = {"Pakistan", "UAE", "Saudi Arabia", "China", "Turkey","Yemen","Afghanistan","Nepal","Oman","Qatar","Azerbaijan","Iran","Iraq","Uzbekistan","Turkmenistan","Kazakhstan","South Korea","North Korea","Russia"};
+        String[] airblueCountries = {"Pakistan", "UAE", "Saudi Arabia"};
+        String[] emiratesCountries = {
+                "UAE", "Pakistan", "India", "China", "Saudi Arabia", "Iran", "Oman","Iraq", "Russia", "Qatar", "Bangladesh", "Nepal", "South Korea", "North Korea", "Turkey"
+        };
+        String[] airIndiaCountries = {"India", "UAE","China", "Nepal", "Pakistan","Bangladesh","Kazakhstan","Turkey","yemen","Russia"};
+        String[] airKoryo={"North Korea","South Korea","China"};
+
+        String[][] flightTimes = {
+                {"Today at 11:00 PM", "Tomorrow at 3:00 PM"}, // 0 → Emirates
+                {"Today at 8:00 AM", "Tomorrow at 10:00 PM"}, // 1 → PIA
+                {"Today at 1:00 PM", "Tomorrow at 6:00 PM"},  // 2 → AirBlue
+                {"Today at 5:00 AM", "Tomorrow at 9:00 PM"},   // 3 → Air India
+                {"Today at 6:00 AM", "Tomorrow at 2:00 AM"}    // 4-> AirKoryo
+        };
+        boolean found = false;
+
+        System.out.println("Enter your Current Location");
+        String cL = sc.nextLine();
+
+        int sp = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i][0].equalsIgnoreCase(cL)) {
+                sp = i;
+                break;
+            }
+        }
+        if (sp != -1) {
+
+            System.out.println("Current location found at index: " + sp);
+            System.out.println("WHERE TO GO?");
+            String dL = sc.nextLine();
+
+            System.out.println("Available Airlines for your route:");
+
+            boolean pia = false;
+            boolean airblue = false;
+            boolean emirates = false;
+            boolean airIndia = false;
+            boolean isAirKoryoAvailable = false;
+
+            if (isAirlineInCountry(piaCountries, cL) && isAirlineInCountry(piaCountries, dL)) {
+                pia = true;
+                System.out.println("1- PIA");
+            }
+
+            if (isAirlineInCountry(airblueCountries, cL) && isAirlineInCountry(airblueCountries, dL)) {
+                airblue = true;
+                System.out.println("2- Airblue");
+            }
+
+            if (isAirlineInCountry(emiratesCountries, cL) && isAirlineInCountry(emiratesCountries, dL)) {
+                emirates = true;
+                System.out.println("3- Emirates");
+            }
+
+            if (isAirlineInCountry(airIndiaCountries, cL) && isAirlineInCountry(airIndiaCountries, dL)) {
+                airIndia = true;
+                System.out.println("4- Air India");
+            }
+
+            if (isAirlineInCountry(airKoryo, cL) && isAirlineInCountry(airKoryo, dL)) {
+                isAirKoryoAvailable = true;
+                System.out.println("5- Air Koryo");
+            }
+
+            if (!pia && !airblue && !emirates && !airIndia && !isAirKoryoAvailable) {
+                System.out.println("No common airline found between " + cL + " and " + dL);
+                return;
+            }
+
+
+
+//            System.out.println("Select the airline by number:");
+            int opt = -1;
+//            sc.nextLine();
+            boolean isValidChoice = false;
+
+            while (!isValidChoice) {
+                System.out.println("Select the airline by number:");
+                opt = sc.nextInt();
+                sc.nextLine();
+
+                if (opt == 1 && pia) isValidChoice = true;
+                else if (opt == 2 && airblue) isValidChoice = true;
+                else if (opt == 3 && emirates) isValidChoice = true;
+                else if (opt == 4 && airIndia) isValidChoice = true;
+                else if (opt == 5 && isAirKoryoAvailable) isValidChoice = true;
+                else {
+                    System.out.println("❌ Invalid choice. Please select one of the available airline options.");
+                }
+            }
+            switch(opt){
+                case 1:
+                    flightTimeIndex=1;
+                    if (pia) findAndPrintRoute(arr, cL, dL, findLocationIndex(arr, cL));
+                    break;
+                case 2:
+                    flightTimeIndex=2;
+                    if (airblue) findAndPrintRoute(arr, cL, dL, findLocationIndex(arr, cL));
+                    break;
+                case 3:
+                    flightTimeIndex=0;
+                    boolean sourceAvailable = false;
+                    boolean destinationAvailable = false;
+
+                    // Check for source
+                    for (int i = 0; i < emiratesCountries.length; i++) {
+                        if (emiratesCountries[i].equalsIgnoreCase(cL)) {
+                            sourceAvailable = true;
+                            break;
+                        }
+                    }
+
+                    // Check for destination
+                    for (int i = 0; i < emiratesCountries.length; i++) {
+                        if (emiratesCountries[i].equalsIgnoreCase(dL)) {
+                            destinationAvailable = true;
+                            break;
+                        }
+                    }
+
+                    // Evaluate result
+                    if (sourceAvailable && destinationAvailable) {
+                        System.out.println("Emirates Direct flight available from " + cL + " to " + dL+" ✈");
+                    } else {
+                        System.out.println("No Emirates flight found from " + cL + " to " + dL);
+                    }
+
+                    break;
+                case 4:
+                    flightTimeIndex=3;
+                    if (airIndia) findAndPrintRoute(arr, cL, dL, findLocationIndex(arr, cL));
+                    break;
+                case 5:
+                    flightTimeIndex=4;
+                    if (isAirKoryoAvailable) findAndPrintRoute(arr, cL, dL, findLocationIndex(arr, cL));
+                    break;
+
+                default:
+                    System.out.println("Invalid selection.");
+            }
+
+
+        } else {
+            System.out.println("Current location not found.");
+        }
+
+
+        if (flightTimeIndex != -1) {
+            System.out.println("Select your flight schedule: ✈");
+            System.out.println("1. " + flightTimes[flightTimeIndex][0]);
+            System.out.println("2. " + flightTimes[flightTimeIndex][1]);
+
+            int scheduleChoice = 0;
+
+            while (true) {
+                System.out.println("Choose 1 or 2: ");
+                scheduleChoice = sc.nextInt();
+                sc.nextLine(); // Clear the buffer
+
+                if (scheduleChoice == 1 || scheduleChoice == 2) {
+                    break; // Valid input; exit the loop
+                } else {
+                    System.out.println("❌ Invalid choice. Please enter 1 or 2.");
+                }
+            }
+        }else {
+            System.out.println("Flight times not available for the selected airline.");
+        }
+
+
+
+        int chooseClass;
+        int choosePersons;
+        System.out.println("Now Select the Class (Choose number)");
+        System.out.println("1- First Class \n2- Business Class \n3- Economy Class");
+        chooseClass=sc.nextInt();
+
+        System.out.println("How Many Persons to Go?");
+        choosePersons=sc.nextInt();
+
+
+
+
+    }
+}
