@@ -1,5 +1,8 @@
 import java.util.Scanner;
+
 public class Main {
+    
+
     public static int findLocationIndex(String[][] arr, String location) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i][0].equalsIgnoreCase(location)) {
@@ -169,7 +172,9 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        
+
         int flightTimeIndex = -1;
 
         String[][] arr = {
@@ -190,10 +195,10 @@ public class Main {
                 {"North Korea", "China", "South Korea"},                                        // 14
                 {"South Korea", "North Korea", "China"},
                 {"Bangladesh", "India", "Nepal", "China"},
-                {"Kazakhstan", "Uzbekistan", "China", "Russia"},
+                {"Kazakhstan", "Uzbekistan", "China", "Russia","Bangladesh"},
                 {"Qatar", "UAE", "Saudi Arabia", "Oman"},
                 {"Azerbaijan", "Iran", "Turkey", "Russia"},
-                {"Russia","Azerbaijan","Kazakhstan","China"}// 15
+                {"Russia","Azerbaijan","Kazakhstan","China"}
         };
 
         String[][] emAr = {
@@ -232,21 +237,35 @@ public class Main {
         };
         boolean found = false;
 
-        System.out.println("Enter your Current Location");
-        String cL = sc.nextLine();
+        System.out.println("***************************************");
+        System.out.println("FLIGHT BOOKING ✈️");
+        System.out.println("***************************************");
 
+        boolean currentLocation=false;
+        String cL="";
         int sp = -1;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i][0].equalsIgnoreCase(cL)) {
-                sp = i;
-                break;
+
+        while(!currentLocation) {
+            System.out.println("🌍 Enter your Current Location");
+            cL = scanner.nextLine();
+
+
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i][0].equalsIgnoreCase(cL)) {
+                    sp = i;
+                    currentLocation = true;
+                    break;
+                }
+            }
+            if (!currentLocation) {
+                System.out.println("❌ Invalid location. Please try again.");
             }
         }
+
         if (sp != -1) {
 
-            System.out.println("Current location found at index: " + sp);
-            System.out.println("WHERE TO GO?");
-            String dL = sc.nextLine();
+            System.out.println("WHERE TO GO?📍");
+            String dL = scanner.nextLine();
 
             System.out.println("Available Airlines for your route:");
 
@@ -288,25 +307,10 @@ public class Main {
 
 
 
-//            System.out.println("Select the airline by number:");
-            int opt = -1;
-//            sc.nextLine();
-            boolean isValidChoice = false;
+            System.out.println("Select the airline by number:");
+            int opt = scanner.nextInt();
+            scanner.nextLine();
 
-            while (!isValidChoice) {
-                System.out.println("Select the airline by number:");
-                opt = sc.nextInt();
-                sc.nextLine();
-
-                if (opt == 1 && pia) isValidChoice = true;
-                else if (opt == 2 && airblue) isValidChoice = true;
-                else if (opt == 3 && emirates) isValidChoice = true;
-                else if (opt == 4 && airIndia) isValidChoice = true;
-                else if (opt == 5 && isAirKoryoAvailable) isValidChoice = true;
-                else {
-                    System.out.println("❌ Invalid choice. Please select one of the available airline options.");
-                }
-            }
             switch(opt){
                 case 1:
                     flightTimeIndex=1;
@@ -339,7 +343,7 @@ public class Main {
 
                     // Evaluate result
                     if (sourceAvailable && destinationAvailable) {
-                        System.out.println("Emirates Direct flight available from " + cL + " to " + dL+" ✈");
+                        System.out.println("Emirates Direct flight available from " + cL + " to " + dL);
                     } else {
                         System.out.println("No Emirates flight found from " + cL + " to " + dL);
                     }
@@ -359,46 +363,58 @@ public class Main {
             }
 
 
-        } else {
-            System.out.println("Current location not found.");
-        }
+//        } else {
+//            System.out.println("Current location not found.");
+//        }
 
 
         if (flightTimeIndex != -1) {
-            System.out.println("Select your flight schedule: ✈");
+            System.out.println("Select your flight schedule:");
             System.out.println("1. " + flightTimes[flightTimeIndex][0]);
             System.out.println("2. " + flightTimes[flightTimeIndex][1]);
+            System.out.println("Choose 1 or 2: ");
+            int scheduleChoice = scanner.nextInt();
+            scanner.nextLine();
+            if(scheduleChoice==1|| scheduleChoice==2){
 
-            int scheduleChoice = 0;
-
-            while (true) {
-                System.out.println("Choose 1 or 2: ");
-                scheduleChoice = sc.nextInt();
-                sc.nextLine(); // Clear the buffer
-
-                if (scheduleChoice == 1 || scheduleChoice == 2) {
-                    break; // Valid input; exit the loop
-                } else {
-                    System.out.println("❌ Invalid choice. Please enter 1 or 2.");
-                }
+                String selectedTime = flightTimes[flightTimeIndex][scheduleChoice - 1];
+                System.out.println("Your Flight scheduled for  " + selectedTime);
+            }else{
+                System.out.println("Enter valid choice");
             }
         }else {
             System.out.println("Flight times not available for the selected airline.");
         }
-
-
-
         int chooseClass;
         int choosePersons;
         System.out.println("Now Select the Class (Choose number)");
         System.out.println("1- First Class \n2- Business Class \n3- Economy Class");
-        chooseClass=sc.nextInt();
+        chooseClass=scanner.nextInt();
 
         System.out.println("How Many Persons to Go?");
-        choosePersons=sc.nextInt();
+        choosePersons=scanner.nextInt();
 
+        scanner.nextLine(); // Consume leftover newline
 
+        String[] names = new String[choosePersons];
+        String[] ids = new String[choosePersons];
 
+        for (int i = 0; i < choosePersons; i++) {
+            System.out.println("Enter name of person " + (i + 1) + ":");
+            names[i] = scanner.nextLine();
 
+            System.out.println("Enter ID of person " + (i + 1) + ":");
+            ids[i] = scanner.nextLine();
+        }
+
+        System.out.println("***************************************");
+        System.out.println("Choose Payment Currency");
+
+            System.out.println("1- Dollars\t\t\t($) \n2- Rupees\t\t\t(PKR) \n3- Dirham\t\t\t(AED) \n4- Chinese yuan\t\t(¥)");
+
+        } else {
+            System.out.println("Current location not found.");
+        }
     }
 }
+   
